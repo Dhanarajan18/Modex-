@@ -1,0 +1,27 @@
+{
+  "name": "modex-backend",
+  "version": "1.0.0",
+  "description": "Concurrency-safe ticket booking system backend",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "migrate": "node src/migrations/migrate.js",
+    "job": "node src/jobs/expireBookings.js",
+    "test-concurrency": "node src/utils/concurrencyTest.js"
+  },
+  "keywords": ["booking", "concurrency", "tickets"],
+  "author": "Modex Developer",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "info": {
+    "name": "Modex Booking System API",
+    "description": "Complete API collection for the Modex ticket booking system. Includes endpoints for admin operations, show management, and booking functionality.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "modex-booking-api-v1",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the API server is running and healthy."
+      },
+      "response": []
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Create Show",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Concert - The Amazing Band\",\n  \"start_time\": \"2025-12-25T19:00:00Z\",\n  \"total_seats\": 40\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/shows",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "shows"]
+            },
+            "description": "Create a new show with the specified number of seats. All seats will be created with AVAILABLE status."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Show Seats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/shows/1/seats",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "shows", "1", "seats"]
+            },
+            "description": "Get detailed seat information for a show (admin view with full details)."
+          },
+          "response": []
+        }
+      ],
+      "description": "Admin endpoints for managing shows and seats"
+    },
+    {
+      "name": "Shows",
+      "item": [
+        {
+          "name": "List All Shows",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shows",
+              "host": ["{{base_url}}"],
+              "path": ["shows"]
+            },
+            "description": "Get a list of all available shows with seat availability counts."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Show Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/shows/1",
+              "host": ["{{base_url}}"],
+              "path": ["shows", "1"]
+            },
+            "description": "Get detailed information about a specific show including all seats and their status."
+          },
+          "response": []
+        }
+      ],
+      "description": "Public endpoints for browsing shows"
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Book Seats",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seat_ids\": [1, 2, 3],\n  \"user_email\": \"user@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/booking/1",
+              "host": ["{{base_url}}"],
+              "path": ["booking", "1"]
+            },
+            "description": "Book one or more seats for a show. Uses concurrency-safe transactions to prevent overbooking."
+          },
+          "response": []
+        },
+        {
+          "name": "Book Seats (Concurrent Test 1)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seat_ids\": [4, 5],\n  \"user_email\": \"test-user-1@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/booking/1",
+              "host": ["{{base_url}}"],
+              "path": ["booking", "1"]
+            },
+            "description": "Use this along with 'Concurrent Test 2' to manually test concurrent booking. Send both requests simultaneously to see conflict handling."
+          },
+          "response": []
+        },
+        {
+          "name": "Book Seats (Concurrent Test 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seat_ids\": [4, 5],\n  \"user_email\": \"test-user-2@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/booking/1",
+              "host": ["{{base_url}}"],
+              "path": ["booking", "1"]
+            },
+            "description": "Use this along with 'Concurrent Test 1' to manually test concurrent booking. Send both requests simultaneously - only one should succeed."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Booking Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/booking/1",
+              "host": ["{{base_url}}"],
+              "path": ["booking", "1"]
+            },
+            "description": "Get the status and details of a specific booking by booking ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Bookings for Show",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/booking/show/1",
+              "host": ["{{base_url}}"],
+              "path": ["booking", "show", "1"]
+            },
+            "description": "Get all bookings for a specific show (useful for debugging and admin purposes)."
+          },
+          "response": []
+        }
+      ],
+      "description": "Booking endpoints for seat reservation and status checking"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000",
+      "type": "string"
+    }
+  ]
+}
